@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignUp</title>
+</head>
+<body>
+
+    <a href="{{ url_for('register') }}" class="btn btn-danger" style="float: right; margin: 10px; text-decoration: none; color: black;">
+        Register
+    </a>
+
+    <form action="" method="post">
+
+        <label for="nome">User:</label>
+        <input type="text" name="userForm">
+
+        <br>
+        <br>
+
+        <label for="nome">Password:</label>
+        <input type="text" name="passwordForm">
+
+        <br>
+        <br>
+        
+        <input type="submit" value="sign-in">
+    </form>
+</body>
+</html>
