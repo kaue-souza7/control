@@ -17,21 +17,52 @@
         <hr>
         <h1>Campo de Metas</h1>
 
+        <h3>Nova Meta</h3>
+
+
+        <form action="{{ url_for('criar_meta') }}" method="post">
+            <label for="mes_referenciaForm">Mês Referencia:</label><br>
+            <input type="date"  name="mes_referenciaForm" id="mes_referenciaForm" required><br><br>
+
+            <label for="valor_metaForm">Valor da Meta:</label><br>
+            <input type="number" step="100" name="valor_metaForm" id="valor_metaForm" required><br><br>
+
+
+
+            <button type="submit">Salvar</button>
+        </form>
+
 
         <h3>Minhas Metas</h3>
         <table border="1">
             <tr>
                 <th>Mês Referência</th>
                 <th>Valor da Meta</th>
-                <th>Editar</th>
                 <th>Excluir</th>
             </tr>
             {% for meta in metas %}
                 <tr>
-                    <td>{{ meta.mes_referencia }}</td>
-                    <td>R$ {{ "%.2f"|format(meta.valor_meta) }}</td>
-                    <td><a href="#">Editar</a></td>
-                    <td><a href="#">Excluir</a></td>
+
+                    <td>
+                        <form action="/update/{{ meta.id }}/mes_referencia" method="post">
+                            <input type="text" name="mes_referenciaForm" value="{{meta.mes_referencia.strftime('%d/%m/%Y') }}">
+                        </form>
+                    </td>
+                    
+                    <td>
+                        <form action="/update/{{ meta.id }}/valor_meta" method="post">
+                            <input type="text" name="valor_metaForm" value="{{ '%.2f'|format(meta.valor_meta) }}">
+                        </form>
+                    </td>
+
+                   
+
+                    <td>
+                        <form action="/delete/{{ meta.id }}/m" method="post">
+                            <button type="submit">Delete</button>
+                        </form>
+                    </td>
+                    
                 </tr>
             {% else %}
                 <tr>
@@ -39,6 +70,9 @@
                 </tr>
             {% endfor %}
         </table>
+
+
+
 
 
 
@@ -52,7 +86,7 @@
 
         <form action="{{ url_for('criar_despesa') }}" method="post">
             <label for="valorForm">Valor:</label><br>
-            <input type="number" step="0.01" name="valorForm" id="valorForm" required><br><br>
+            <input type="number" step="100" name="valorForm" id="valorForm" required><br><br>
 
             <label for="categoriaForm">Categoria:</label><br>
             <input type="text" name="categoriaForm" id="categoriaForm" required><br><br>
@@ -129,6 +163,28 @@
         <hr>
         <h1>Campo de Receitas</h1>
 
+        <h3>Nova Receita</h3>
+
+        <form action="{{ url_for('criar_receita') }}" method="post">
+            <label for="valorForm">Valor:</label><br>
+            <input type="number" step="100" name="valorForm" id="valorForm" required><br><br>
+
+            <label for="categoriaForm">Categoria:</label><br>
+            <input type="text" name="categoriaForm" id="categoriaForm" required><br><br>
+
+            <label for="descricaoForm">Descrição:</label><br>
+            <textarea name="descricaoForm" id="descricaoForm" rows="3"></textarea><br><br>
+
+            <label for="data_recebimentoForm">Data de Recebimento:</label><br>
+            <input type="date" name="data_recebimentoForm" id="data_recebimentoForm" required><br><br>
+
+            <label for="mes_referenciaForm">Mês de Referência:</label><br>
+            <input type="date" name="mes_referenciaForm" id="mes_referenciaForm" required><br><br>
+
+            <button type="submit">Salvar</button>
+        </form>
+
+
 
         <h3>Minhas Receitas</h3>
         <table border="1">
@@ -137,17 +193,40 @@
                 <th>Valor</th>
                 <th>Data de Recebimento</th>
                 <th>Descrição</th>
-                <th>Editar</th>
                 <th>Excluir</th>
             </tr>
             {% for receita in receitas %}
                 <tr>
-                    <td>{{ receita.categoria }}</td>
-                    <td>R$ {{ "%.2f"|format(receita.valor) }}</td>
-                    <td>{{ receita.data_recebimento.strftime('%d/%m/%Y') }}</td>
-                    <td>{{ receita.descricao }}</td>
-                    <td><a href="#">Editar</a></td>
-                    <td><a href="#">Excluir</a></td>
+                    <td>
+                        <form action="/update/{{receita.id }}/categoria/r" method="post">
+                            <input type="text" name="categoriaForm" value="{{receita.categoria}}">
+                        </form>
+                    </td>
+
+                    <td>
+                        <form action="/update/{{receita.id }}/valor/r" method="post">
+                            <input type="text" name="valorForm" value="{{ '%.2f'|format(receita.valor) }}">
+                        </form>                        
+                    </td>
+
+                    <td>
+                        <form action="/update/{{receita.id }}/data_recebimento/r" method="post">
+                            <input type="text" name="data_recebimentoForm" value="{{receita.data_recebimento.strftime('%d/%m/%Y') }}">
+                        </form>
+                    </td>
+
+                    <td>
+                        <form action="/update/{{receita.id }}/descricao/r" method="post">
+                            <input type="text" name="descricaoForm" value="{{ receita.descricao }}">
+                        </form> 
+                    </td>
+
+                    <td>
+                        <form action="/delete/{{ receita.id }}/r" method="post">
+                            <button type="submit">Delete</button>
+                        </form>
+                    </td>
+
                 </tr>
             {% else %}
                 <tr>

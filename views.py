@@ -4,6 +4,8 @@ from flask_login import LoginManager, login_user, login_required, logout_user, c
 from models import User, Despesa, Receita, MetaPoupanca
 from db import db
 import hashlib
+from datetime import datetime
+
 
 
 
@@ -96,12 +98,66 @@ def logout():
 
 
 
-# //////////////     CRUD RECEITAS     /////////////
 
 
-from datetime import datetime
+# //////////////     CRUD METAS     /////////////
 
-@app.route('/create', methods=['POST'])
+
+@app.route('/create/meta', methods=['POST'])
+@login_required
+def criar_meta():
+    user = current_user.id
+    mes = datetime.strptime(request.form['mes_referenciaForm'], "%Y-%m-%d").date()
+    valor = request.form['valor_metaForm']
+
+    nova_meta = MetaPoupanca(usuario_id=user, mes_referencia=mes, valor_meta=valor)
+
+    db.session.add(nova_meta)
+    db.session.commit()
+
+    return redirect(url_for('home'))
+
+
+@app.route('/delete/<int:meta_id>/m', methods=['POST'])
+@login_required
+def delete_meta(meta_id):
+    meta = MetaPoupanca.query.get(meta_id)
+
+    if meta:
+        db.session.delete(meta)
+        db.session.commit()
+
+    return redirect(url_for('home'))
+
+
+@app.route('/update/<int:meta_id>/<string:column>', methods=['POST'])
+@login_required
+def update_meta(meta_id, column):
+    meta = MetaPoupanca.query.get(meta_id)
+
+    if column == 'mes_referencia':
+        data_str = request.form['mes_referenciaForm']  # '2025-07-01' vindo do input
+        data_obj = datetime.strptime(data_str, "%d/%m/%Y").date()
+        meta.mes_referencia = data_obj   
+        db.session.commit()
+
+    elif column == 'valor_meta':
+        valor = request.form['valor_metaForm']
+        meta.valor_meta = valor
+        db.session.commit()
+
+
+    return redirect(url_for('home'))
+
+
+
+
+
+# //////////////     CRUD DESPESAS     /////////////
+
+
+
+@app.route('/create/despesa', methods=['POST'])
 @login_required
 def criar_despesa():
     user = current_user.id
@@ -141,22 +197,100 @@ def update_despesa(despesa_id, column):
         despesa.categoria = request.form['categoriaForm']
         db.session.commit()
 
-    if column == 'valor':
+    elif column == 'valor':
         despesa.valor = request.form['valorForm']
         db.session.commit()
 
-    if column == 'data_pagamento':
+    elif column == 'data_pagamento':
         data_str = request.form['data_pagamentoForm']  # '2025-07-01' vindo do input
         data_obj = datetime.strptime(data_str, "%d/%m/%Y").date()
         despesa.data_pagamento = data_obj   
         db.session.commit()
 
-    if column == 'descricao':
+    elif column == 'descricao':
         despesa.descricao = request.form['descricaoForm']
         db.session.commit()
+
+    else: return 'Inválido!'
 
 
 
 
     return redirect(url_for('home'))
     
+
+
+
+
+
+
+# //////////////     CRUD RECEITAS     /////////////
+
+
+@app.route('/create/receita', methods=['POST'])
+@login_required
+def criar_receita():
+    user = current_user.id
+    valor = request.form['valorForm']
+    categoria = request.form['categoriaForm']
+    descricao = request.form['descricaoForm']
+    data_recebimento = datetime.strptime(request.form['data_recebimentoForm'], "%Y-%m-%d").date()
+    mes_referencia = datetime.strptime(request.form['mes_referenciaForm'], "%Y-%m-%d").date()
+
+    # falta validar dados do fomrs, verificar se ja existe
+
+    nova_receita = Receita(
+        usuario_id=user, 
+        valor=valor, 
+        categoria=categoria, 
+        descricao=descricao, 
+        data_recebimento=data_recebimento,  
+        mes_referencia=mes_referencia
+    )
+
+    db.session.add(nova_receita)
+    db.session.commit()
+
+    return redirect(url_for('home'))
+
+
+@app.route('/delete/<int:receita_id>/r', methods=['POST'])
+def delete_receita(receita_id):
+    receita = Receita.query.get(receita_id)
+
+    if receita:
+        db.session.delete(receita)
+        db.session.commit()
+
+    return redirect(url_for('home'))
+
+
+
+@app.route('/update/<int:receita_id>/<string:column>/r', methods=['POST'])
+def update_receita(receita_id, column):
+    receita = Receita.query.get(receita_id)
+
+    if column == 'categoria':
+        receita.categoria = request.form['categoriaForm']
+        db.session.commit()
+
+    elif column == 'valor':
+        receita.valor = request.form['valorForm']
+        db.session.commit()
+
+    elif column == 'data_recebimento':
+        data_str = request.form['data_recebimentoForm']  # '2025-07-01' vindo do input
+        data_obj = datetime.strptime(data_str, "%d/%m/%Y").date()
+        receita.data_recebimento = data_obj   
+        db.session.commit()
+
+    elif column == 'descricao':
+        receita.descricao = request.form['descricaoForm']
+        db.session.commit()
+
+    else: return 'Inválido!'
+
+
+
+
+    return redirect(url_for('home'))
