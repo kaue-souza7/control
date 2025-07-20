@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Minha Página{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <header class="header">
+        <a href="{{ url_for('logout') }}" class="btn btn-danger" style="float: right; margin: 10px; text-decoration: none; color: black;">
+            Logout
+        </a>
+        <h1>Welcome to home {{ current_user.name }}!</h1>
+
+        <hr>
+    </header>
+
+    <main class="content">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer class="footer">
+        <hr>
+        <p class="btn btn-danger" style="float: right; margin: 25px; color: black;">
+            sobre
+        </p>
+        <h1>Created by kaue</h1>
+    </footer>
+
+</body>
+</html>

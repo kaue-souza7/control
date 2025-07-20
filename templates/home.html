@@ -1,20 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-    
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+
+
+
     {% if current_user.is_authenticated %}
-    <a href="{{ url_for('logout') }}" class="btn btn-danger" style="float: right; margin: 10px; text-decoration: none; color: black;">
-        Logout
-    </a>
-        <h1>Welcome to home {{ current_user.name }}!</h1>
 
-        <hr>
         <h1>Campo de Metas</h1>
 
         <h3>Nova Meta</h3>
@@ -238,6 +232,13 @@
     {% else %}
         <h1>You are not logged in!</h1>
     {% endif %}
+{% endblock %}
 
-</body>
-</html>
+
+
+
+
+    
+    
+
+

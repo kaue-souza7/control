@@ -3,29 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SignUp</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+    <title>Sign In / Register</title>
+
 </head>
 <body>
 
-    <a href="{{ url_for('register') }}" class="btn btn-danger" style="float: right; margin: 10px; text-decoration: none; color: black;">
-        Register
-    </a>
+<div class="container">
+    <div class="flip-box" id="flipBox">
 
-    <form action="" method="post">
+        <!-- Login Form -->
+        <form action="" method="post" class="form-box login-box" id="login-form">
+            <h2>Sign In</h2>
+            <label for="userForm">User</label>
+            <input type="text" name="userForm" placeholder="Enter your name" required>
 
-        <label for="nome">User:</label>
-        <input type="text" name="userForm">
+            <label for="passwordForm">Password</label>
+            <input type="password" name="passwordForm" placeholder="********" required>
 
-        <br>
-        <br>
+            {% if erro %}
+                <div style="color: red; font-size: 0.9em;">{{ erro }}</div>
+            {% endif %}
 
-        <label for="nome">Password:</label>
-        <input type="text" name="passwordForm">
+            <!-- <label for="confirm-passwordForm">Confirm Password</label>
+            <input type="password" name="confirm-passwordForm" placeholder="********" required>             -->
 
-        <br>
-        <br>
-        
-        <input type="submit" value="sign-in">
-    </form>
+            <input type="submit" value="Sign In" class="submit-btn">
+            <button type="button" class="toggle-btn" onclick="toggleFlip()">Register</button>
+        </form>
+
+        <!-- Register Form -->
+        <form action="{{ url_for('register') }}" method="post" class="form-box register-box">
+            <h2>Register</h2>
+            <label for="nameForm">Full Name</label>
+            <input type="text" name="nameForm" placeholder="Enter your full name" required>
+
+            <label for="userForm">User</label>
+            <input type="text" name="userForm" placeholder="Enter your user" required>
+
+            <label for="passwordForm">Password</label>
+            <input type="password" name="passwordForm" placeholder="********" required>
+
+            <input type="submit" value="Register" class="submit-btn">
+            <button type="button" class="toggle-btn" onclick="toggleFlip()">Back to Login</button>
+        </form>
+
+    </div>
+</div>
+
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="flash-message" data-category="{{ category }}" data-msg="{{ message }}"></div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<script>
+    function toggleFlip() {
+        const flipBox = document.getElementById('flipBox');
+        flipBox.classList.toggle('flipped');
+
+        const loginform = document.getElementById('login-form');
+        loginform.classList.toggle('hide');
+    }
+
+    window.onload = function () {
+        const flashMessages = document.querySelectorAll('.flash-message');
+        flashMessages.forEach(function (el) {
+            const msg = el.getAttribute('data-msg');
+            const category = el.getAttribute('data-category');
+
+            // Você pode usar categoria para estilizar ou mudar o texto
+            if (category === 'success') {
+                alert("✅ Sucesso: " + msg);
+            } else if (category === 'error') {
+                alert("❌ Erro: " + msg);
+            } else if (category === 'warning') {
+                alert("⚠️ Aviso: " + msg);
+            } else {
+                alert(msg); // categoria genérica
+            }
+        });
+    };
+</script>
+
+
+    
+
 </body>
 </html>

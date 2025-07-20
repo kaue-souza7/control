@@ -40,8 +40,9 @@ def login():
         password = request.form['passwordForm']
 
         user = db.session.query(User).filter_by(user=user, password=hash(password)).first()
-        if not user:
-            return "user or password invalid!"
+        if not user:            
+            erro = 'Incorrect username or password!'
+            return render_template('login.html', erro=erro)
         login_user(user)
         return redirect(url_for('home'))
 
@@ -83,14 +84,15 @@ def register():
 
         login_user(new_user)
         
-        return redirect(url_for('home'))
+        return redirect(url_for('login'))
 
 # view for logout user
 @app.route('/logout')
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('home'))
+    flash('Você foi deslogado com sucesso!', 'success')
+    return redirect(url_for('login'))
 
 
 
