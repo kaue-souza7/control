@@ -1,9 +1,10 @@
 from main import app
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from models import User, Despesa, Receita, MetaPoupanca
 from db import db
 import hashlib
+from sqlalchemy import func
 from datetime import datetime
 
 
@@ -57,14 +58,44 @@ def user_loader(id):
 @app.route('/')
 @login_required
 def home():
-    despesas = current_user.despesas
-    receitas = current_user.receitas
+    mes = session.get('mes')
+    ano = session.get('ano')
+
+    todas_receitas = Receita.query.filter_by(usuario_id=current_user.id).all()
+    todas_despesas = Despesa.query.filter_by(usuario_id=current_user.id).all()
+
+# Filtrando manualmente com base no split da data
+    receitas = [
+        r for r in todas_receitas
+        if r.mes_referencia.strftime('%Y-%m-%d').split('-')[0] == str(ano)
+        and r.mes_referencia.strftime('%Y-%m-%d').split('-')[1] == str(mes).zfill(2)
+    ]
+
+    despesas = [
+        d for d in todas_despesas
+        if d.mes_referencia.strftime('%Y-%m-%d').split('-')[0] == str(ano)
+        and d.mes_referencia.strftime('%Y-%m-%d').split('-')[1] == str(mes).zfill(2)
+    ]
+
     metas = current_user.metas
+
+
+    total_receitas = sum([r.valor for r in receitas])
+    total_despesas = sum([d.valor for d in despesas])
+
+    sobra = total_receitas - total_despesas
+
+
     return render_template(
         'home.html', 
         despesas=despesas, 
         receitas=receitas,
         metas=metas,
+        total_despesas=total_despesas,
+        total_receitas=total_receitas,
+        sobra=sobra,
+        mes=mes,
+        ano=ano
     )
 
 
@@ -93,6 +124,34 @@ def logout():
     logout_user()
     flash('Você foi deslogado com sucesso!', 'success')
     return redirect(url_for('login'))
+
+
+
+
+
+
+
+
+
+# //////////////     setar mes     /////////////
+
+@app.route('/set_mes')
+def set_mes():
+    mes = request.args.get('mes')
+    if mes:
+        session['mes'] = int(mes)
+    return redirect(url_for('home'))
+
+@app.route('/set_ano')
+def set_ano():
+    ano = request.args.get('ano')
+    if ano:
+        session['ano'] = int(ano)
+    return redirect(url_for('home'))
+
+
+
+
 
 
 

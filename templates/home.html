@@ -9,26 +9,111 @@
 
     {% if current_user.is_authenticated %}
 
+        <div class="one-part">
+
+            <div class="one-part-left">
+
+
+                <div class="form-find">
+    
+                    <form method="GET" action="{{ url_for('set_mes') }}">
+                        <label for="mes">Choose a month:</label>
+                        <select name="mes" id="mes" onchange="this.form.submit()">
+                            <option value="">-- Select --</option>
+                            <option value="1">Janeiro</option>
+                            <option value="2">Fevereiro</option>
+                            <option value="3">Março</option>
+                            <option value="4">Abril</option>
+                            <option value="5">Maio</option>
+                            <option value="6">Junho</option>
+                            <option value="7">Julho</option>
+                            <option value="8">Agosto</option>
+                            <option value="9">Setembro</option>
+                            <option value="10">Outubro</option>
+                            <option value="11">Novembro</option>
+                            <option value="12">Dezembro</option>
+                        </select>
+                    </form>
+            
+                    <form method="GET" action="{{ url_for('set_ano') }}">
+                        <label for="ano">Choose a year:</label>
+                        <select name="ano" id="ano" onchange="this.form.submit()">
+                            <option value="">-- Select --</option>
+                            <option value="2025">2025</option>
+                            <option value="2026">2026</option>
+                        </select>
+                    </form>
+    
+                </div>
+        
+        
+                <div class="res">
+    
+                    <div class="resumo">
+                        <div class="resumo-item">
+                            <p>Despesa: </p>
+                            <div class="inf-resumo">
+                                <h3>{{ total_despesas }}</h3>
+                            </div>
+                        </div>
+                        
+                        <div class="resumo-item">
+                            <p>Receita:</p>
+                             
+                            <div class="inf-resumo">
+                                <h3>{{ total_receitas }}</h3>
+                            </div>
+                        </div>
+                        
+                        <div class="resumo-item">
+                            <p>Sobra:</p>
+                             
+                            <div class="inf-resumo">
+                                <h3>{{ sobra }}</h3>
+                            </div>
+                        </div>
+                    </div>
+    
+    
+                </div>
+
+
+
+            </div>
+
+
+            <div class="one-part-meta">
+
+                <h3>Nova Meta</h3>
+        
+                <button id="btnCadastrar">Cadastrar Meta</button>
+                <form action="{{ url_for('criar_meta') }}" method="post" id="formMeta" style="display: none;" >
+                    <label for="mes_referenciaForm">Mês Referencia:</label><br>
+                    <input type="date"  name="mes_referenciaForm" id="mes_referenciaForm" required><br><br>
+        
+                    <label for="valor_metaForm">Valor da Meta:</label><br>
+                    <input type="number" step="100" name="valor_metaForm" id="valor_metaForm" required><br><br>
+        
+                    <button type="submit">Salvar</button>
+                </form>
+
+            </div>
+
+
+        </div>
+
+
+        <hr>
+
         <h1>Campo de Metas</h1>
 
-        <h3>Nova Meta</h3>
 
-
-        <form action="{{ url_for('criar_meta') }}" method="post">
-            <label for="mes_referenciaForm">Mês Referencia:</label><br>
-            <input type="date"  name="mes_referenciaForm" id="mes_referenciaForm" required><br><br>
-
-            <label for="valor_metaForm">Valor da Meta:</label><br>
-            <input type="number" step="100" name="valor_metaForm" id="valor_metaForm" required><br><br>
-
-
-
-            <button type="submit">Salvar</button>
-        </form>
-
-
+        
         <h3>Minhas Metas</h3>
-        <table border="1">
+
+        <button id="btnVerMetas">Mostrar Metas</button>
+
+        <table id="tableMetas" style="display: none;" >
             <tr>
                 <th>Mês Referência</th>
                 <th>Valor da Meta</th>
@@ -233,7 +318,6 @@
         <h1>You are not logged in!</h1>
     {% endif %}
 {% endblock %}
-
 
 
 
