@@ -1,5 +1,27 @@
-.form-find{
-    margin-left: 15px;
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body{
+    font-family: 'Inter', sans-serif;
+    /* height: 100%; */
+    overflow-x: hidden;
+}
+
+
+
+.find-form{
+    background-color: #dedede;
+    display: flex; 
+    flex-direction: row;
+    justify-content: space-between;
+    width: 60%;
+    margin-left: 10px;
+    padding: 5px;
+    border-radius: 10px;
 }
 
 .resumo{
@@ -21,6 +43,21 @@
     font-weight: bold;
 }
 
+.inf-resumo-d{
+    background-color: rgba(255, 0, 0, 0.3);
+    
+}
+
+.inf-resumo-r{
+    background-color: rgba(25, 219, 22, 0.3);
+    
+}
+
+.inf-resumo-s{
+    background-color: rgba(12, 79, 11, 0.3);
+    
+}
+
 
 
 .inf-resumo{
@@ -38,6 +75,7 @@
     display: flex;
     justify-content: center; 
     flex-direction: row;
+    /* margin:  50px 10px 50px 10px; */
     /* align-items: left;   */
     
 
@@ -45,16 +83,214 @@
 }
 
 .one-part-left{
-    width: 60%;
+    width: 50%;
 
 }
 
 .one-part-meta{
-    width: 45%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 50%;
     float: right;
+}
+
+.one-part-meta1{
+    background-color: #dedede;
+    padding: 5px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    width: 28%;
+}
+
+.one-part-meta2{
+    background-color: #dedede;
+    padding: 5px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    width: 68%;
+}
+
+
+
+.c-meta{
+    margin-top: 5px;
+}
+
+.tableMetas{
+    margin-bottom: 10px;
 }
 
 
 .tableMetas{
     border: none;
 }
+
+
+.second-part{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+
+}
+
+.second-part-left{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 45%;
+}
+
+.div-d{
+    text-align: left;
+}
+
+
+.second-part-right{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 45%;
+}
+
+.div-r{
+    text-align: left;
+}
+
+
+
+
+
+
+
+
+
+.modalR, .modalD {
+  display: none; /* esconde inicialmente */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5); /* fundo escuro com transparência */
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-conteudoR, .modal-conteudoD {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  width: 300px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.3);
+  position: relative;
+}
+
+.fecharR, .fecharD {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 20px;
+  cursor: pointer;
+};
+
+
+.tableReceitas, .tableDespesas{
+    margin-top: 10px;
+}
+
+
+
+
+
+
+
+
+/* Estilo base da tabela */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 1rem;
+  text-align: left;
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+}
+
+/* Cabeçalho */
+thead {
+  background-color: #f5f5f5;
+}
+
+thead th {
+  padding: 8px 12px;
+  font-weight: bold;
+  border-bottom: 2px solid #ccc;
+}
+
+/* Corpo da tabela */
+tbody tr {
+  border-bottom: 1px solid #e0e0e0;
+}
+
+tbody td {
+  padding: 5px 10px;
+}
+
+tbody td input{
+    width: 100%;
+}
+
+
+/* Alternância de cor para linhas */
+tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+/* Botão de excluir */
+td:last-child {
+  text-align: center;
+}
+
+button.excluir-btn {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+button.excluir-btn:hover {
+  background-color: #cc0000;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+footer{
+    width: 100%;
+    position: absolute; 
+    bottom: 0;
+};

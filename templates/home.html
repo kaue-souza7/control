@@ -10,11 +10,11 @@
     {% if current_user.is_authenticated %}
 
         <div class="one-part">
-
             <div class="one-part-left">
 
 
-                <div class="form-find">
+
+                <div class="find-form">
     
                     <form method="GET" action="{{ url_for('set_mes') }}">
                         <label for="mes">Choose a month:</label>
@@ -45,57 +45,126 @@
                     </form>
     
                 </div>
+
+
+
         
         
                 <div class="res">
     
                     <div class="resumo">
-                        <div class="resumo-item">
-                            <p>Despesa: </p>
-                            <div class="inf-resumo">
-                                <h3>{{ total_despesas }}</h3>
-                            </div>
-                        </div>
-                        
-                        <div class="resumo-item">
+
+
+                        <div class="resumo-item ">
                             <p>Receita:</p>
                              
-                            <div class="inf-resumo">
+                            <div class="inf-resumo inf-resumo-r">
                                 <h3>{{ total_receitas }}</h3>
                             </div>
                         </div>
+
+
+
+                        <div class="resumo-item">
+                            <p>Despesa: </p>
+                            <div class="inf-resumo inf-resumo-d">
+                                <h3>{{ total_despesas }}</h3>
+                            </div>
+                        </div>
+
+
+                        
+                        <div class="resumo-item">
+                            <p>Meta:</p>
+                                
+                            <div class="inf-resumo inf-resumo-s">
+                                <h3>{{ meta_filtro }}</h3>
+                            </div>
+                        </div>                        
+                        
                         
                         <div class="resumo-item">
                             <p>Sobra:</p>
                              
-                            <div class="inf-resumo">
+                            <div class="inf-resumo inf-resumo-s">
                                 <h3>{{ sobra }}</h3>
                             </div>
                         </div>
+
+
+
                     </div>
-    
-    
                 </div>
-
-
-
             </div>
 
 
             <div class="one-part-meta">
 
-                <h3>Nova Meta</h3>
-        
-                <button id="btnCadastrar">Cadastrar Meta</button>
-                <form action="{{ url_for('criar_meta') }}" method="post" id="formMeta" style="display: none;" >
-                    <label for="mes_referenciaForm">Mês Referencia:</label><br>
-                    <input type="date"  name="mes_referenciaForm" id="mes_referenciaForm" required><br><br>
-        
-                    <label for="valor_metaForm">Valor da Meta:</label><br>
-                    <input type="number" step="100" name="valor_metaForm" id="valor_metaForm" required><br><br>
-        
-                    <button type="submit">Salvar</button>
-                </form>
+                <div class="one-part-meta1">
+
+                    <div >
+                
+                        <button id="btnCadastrar">Cadastrar Meta</button>
+                    </div>
+    
+    
+                    <div class="c_meta">
+                        <form action="{{ url_for('criar_meta') }}" method="post" id="formMeta" style="display: none;" >
+                            <label for="mes_referenciaForm">Mês Referencia:</label><br>
+                            <input type="date"  name="mes_referenciaForm" id="mes_referenciaForm" required><br><br>
+                
+                            <label for="valor_metaForm">Valor da Meta:</label><br>
+                            <input type="number" step="100" name="valor_metaForm" id="valor_metaForm" required><br><br>
+                
+                            <button type="submit">Salvar</button>
+                        </form>
+                    </div>
+
+                </div>
+
+                <div class="one-part-meta2">
+                    
+                    <button id="btnVerMetas">Mostrar Metas</button>
+            
+                    <table id="tableMetas" style="display: none;" >
+                        <thead>
+                            <th>Mês Referência</th>
+                            <th>Valor da Meta</th>
+                            <th>Excluir</th>
+                        </thead>
+                        {% for meta in metas %}
+                            <tr>
+            
+                                <td>
+                                    <form action="/update/{{ meta.id }}/mes_referencia" method="post">
+                                        <input type="text" name="mes_referenciaForm" value="{{meta.mes_referencia.strftime('%d/%m/%Y') }}">
+                                    </form>
+                                </td>
+                                
+                                <td>
+                                    <form action="/update/{{ meta.id }}/valor_meta" method="post">
+                                        <input type="text" name="valor_metaForm" value="{{ '%.2f'|format(meta.valor_meta) }}">
+                                    </form>
+                                </td>
+            
+                               
+            
+                                <td>
+                                    <form action="/delete/{{ meta.id }}/m" method="post">
+                                        <button type="submit" class="excluir-btn">Delete</button>
+                                    </form>
+                                </td>
+
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="4">Nenhuma despesa registrada.</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+
+                </div>
+
 
             </div>
 
@@ -105,214 +174,229 @@
 
         <hr>
 
-        <h1>Campo de Metas</h1>
+
+        
+
+
+        <div class="second-part">
+            
+            <div class="second-part-left">
+            
+                <div class="div-d">
+
+
+                    <div>
+        
+                        <h3>Minhas Despesas</h3>
+        
+                    </div>
+        
+                    <div>
+        
+        
+                        <button onclick="abrirModalD()">Nova Desspesa</button>
+        
+                        <div id="modalD" class="modalD">
+                            <div class="modal-conteudoD">
+                                <span class="fecharD" onclick="fecharModalD()">&times;</span>
+        
+                                <form  action="{{ url_for('criar_despesa') }}" method="post"  id="formDespesa">
+                                    <h3>Preencha os campo:</h3>
+                                    <label for="valorForm">Valor:</label><br>
+                                    <input type="number" step="100" name="valorForm" id="valorForm" required><br><br>
+        
+                                    <label for="categoriaForm">Categoria:</label><br>
+                                    <input type="text" name="categoriaForm" id="categoriaForm" required><br><br>
+        
+                                    <label for="descricaoForm">Descrição:</label><br>
+                                    <textarea name="descricaoForm" id="descricaoForm" rows="3"></textarea><br><br>
+        
+                                    <label for="data_pagamentoForm">Data de Pagamento:</label><br>
+                                    <input type="date" name="data_pagamentoForm" id="data_pagamentoForm" required><br><br>
+        
+                                    <label for="mes_referenciaForm">Mês de Referência:</label><br>
+                                    <input type="date" name="mes_referenciaForm" id="mes_referenciaForm" required><br><br>
+        
+                                    <button type="submit">Salvar</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <table border="1" class="tableDespesas">
+                        <thead>
+                            <!-- <th>Categoria</th> -->
+                            <th>Valor</th>
+                            <!-- <th>Data de Pagamento</th> -->
+                            <th>Descrição</th>
+                            <th>Excluir</th>
+                        </thead>
+                        {% for despesa in despesas %}
+                            <tr>
+
+                                <!-- <td>
+                                    <form action="/update/{{despesa.id }}/categoria" method="post">
+                                        <input type="text" name="categoriaForm" value="{{despesa.categoria}}">
+                                    </form>
+                                </td> -->
+
+                                <td>
+                                    <form action="/update/{{despesa.id }}/valor" method="post">
+                                        <input type="text" name="valorForm" value='{{ "%.2f"|format(despesa.valor) }}'>
+                                    </form>
+                                </td>
+
+                                <!-- <td>
+                                    <form action="/update/{{despesa.id }}/data_pagamento" method="post">
+                                        <input type="text" name="data_pagamentoForm" value="{{despesa.data_pagamento.strftime('%d/%m/%Y') }}">
+                                    </form>
+                                </td> -->
+
+                                <td>
+                                    <form action="/update/{{despesa.id }}/descricao" method="post">
+                                        <input type="text" name="descricaoForm" value="{{ despesa.descricao}}">
+                                    </form> 
+                                </td>
+
+                                <td>
+                                    <form action="/delete/{{ despesa.id }}" method="post">
+                                        <button type="submit" class="excluir-btn">Delete</button>
+                                    </form>
+                                </td>
+
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="6">Nenhuma despesa registrada.</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+
+                </div>  
+
+            </div>    
+
+
+
+            <div class="second-part-right">
+
+
+                <div class="div-r">
+
+                    <div>
+                        <h3>Minhas Receitas</h3>
+    
+                    </div>
+                    
+                    <div>
+
+                        <button onclick="abrirModalR()">Nova Receita</button>
+                        
+        
+                        <div id="modalR" class="modalR">
+                            <div class="modal-conteudoR">
+                                <span class="fecharR" onclick="fecharModalR()">&times;</span>
+        
+                                <form action="{{ url_for('criar_receita') }}" id="formReceita" method="post" 
+                                    <label for="valorForm">Valor:</label><br>
+                                    <input type="number" step="100" name="valorForm" id="valorForm" required><br><br>
+        
+                                    <label for="categoriaForm">Categoria:</label><br>
+                                    <input type="text" name="categoriaForm" id="categoriaForm" required><br><br>
+        
+                                    <label for="descricaoForm">Descrição:</label><br>
+                                    <textarea name="descricaoForm" id="descricaoForm" rows="3"></textarea><br><br>
+        
+                                    <label for="data_recebimentoForm">Data de Recebimento:</label><br>
+                                    <input type="date" name="data_recebimentoForm" id="data_recebimentoForm" required><br><br>
+        
+                                    <label for="mes_referenciaForm">Mês de Referência:</label><br>
+                                    <input type="date" name="mes_referenciaForm" id="mes_referenciaForm" required><br><br>
+        
+                                    <button type="submit">Salvar</button>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                
+                    <table border="1" class="tableReceitas">
+                        <thead>
+                            <!-- <th>Categoria</th> -->
+                            <th>Valor</th>
+                            <!-- <th>Data de Recebimento</th> -->
+                            <th>Descrição</th>
+                            <th>Excluir</th>
+                        </thead>
+                        {% for receita in receitas %}
+                            <tr>
+                                <!-- <td>
+                                    <form action="/update/{{receita.id }}/categoria/r" method="post">
+                                        <input type="text" name="categoriaForm" value="{{receita.categoria}}">
+                                    </form>
+                                </td> -->
+    
+                                <td>
+                                    <form action="/update/{{receita.id }}/valor/r" method="post">
+                                        <input type="text" name="valorForm" value="{{ '%.2f'|format(receita.valor) }}">
+                                    </form>                        
+                                </td>
+    
+                                <!-- <td>
+                                    <form action="/update/{{receita.id }}/data_recebimento/r" method="post">
+                                        <input type="text" name="data_recebimentoForm" value="{{receita.data_recebimento.strftime('%d/%m/%Y') }}">
+                                    </form>
+                                </td> -->
+    
+                                <td>
+                                    <form action="/update/{{receita.id }}/descricao/r" method="post">
+                                        <input type="text" name="descricaoForm" value="{{ receita.descricao }}">
+                                    </form> 
+                                </td>
+    
+                                <td>
+                                    <form action="/delete/{{ receita.id }}/r" method="post">
+                                        <button type="submit" class="excluir-btn">Delete</button>
+                                    </form>
+                                </td>
+    
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="6">Nenhuma receita registrada.</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+
+                </div>
+
+        </div>
+
+
+
+
+
+
+                
+
+            
+    
+            
+
+
+
+
+
+
+
+
+
+
 
 
         
-        <h3>Minhas Metas</h3>
 
-        <button id="btnVerMetas">Mostrar Metas</button>
-
-        <table id="tableMetas" style="display: none;" >
-            <tr>
-                <th>Mês Referência</th>
-                <th>Valor da Meta</th>
-                <th>Excluir</th>
-            </tr>
-            {% for meta in metas %}
-                <tr>
-
-                    <td>
-                        <form action="/update/{{ meta.id }}/mes_referencia" method="post">
-                            <input type="text" name="mes_referenciaForm" value="{{meta.mes_referencia.strftime('%d/%m/%Y') }}">
-                        </form>
-                    </td>
-                    
-                    <td>
-                        <form action="/update/{{ meta.id }}/valor_meta" method="post">
-                            <input type="text" name="valor_metaForm" value="{{ '%.2f'|format(meta.valor_meta) }}">
-                        </form>
-                    </td>
-
-                   
-
-                    <td>
-                        <form action="/delete/{{ meta.id }}/m" method="post">
-                            <button type="submit">Delete</button>
-                        </form>
-                    </td>
-                    
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="4">Nenhuma despesa registrada.</td>
-                </tr>
-            {% endfor %}
-        </table>
-
-
-
-
-
-
-
-        <hr>
-        <h1>Campo de despesas</h1>
-
-
-
-        <h3>Nova Despesa</h3>
-
-        <form action="{{ url_for('criar_despesa') }}" method="post">
-            <label for="valorForm">Valor:</label><br>
-            <input type="number" step="100" name="valorForm" id="valorForm" required><br><br>
-
-            <label for="categoriaForm">Categoria:</label><br>
-            <input type="text" name="categoriaForm" id="categoriaForm" required><br><br>
-
-            <label for="descricaoForm">Descrição:</label><br>
-            <textarea name="descricaoForm" id="descricaoForm" rows="3"></textarea><br><br>
-
-            <label for="data_pagamentoForm">Data de Pagamento:</label><br>
-            <input type="date" name="data_pagamentoForm" id="data_pagamentoForm" required><br><br>
-
-            <label for="mes_referenciaForm">Mês de Referência:</label><br>
-            <input type="date" name="mes_referenciaForm" id="mes_referenciaForm" required><br><br>
-
-            <button type="submit">Salvar</button>
-        </form>
-
-
-
-
-
-        <h3>Minhas Despesas</h3>
-        <table border="1">
-            <tr>
-                <th>Categoria</th>
-                <th>Valor</th>
-                <th>Data de Pagamento</th>
-                <th>Descrição</th>
-                <th>Excluir</th>
-            </tr>
-            {% for despesa in despesas %}
-                <tr>
-
-                    <td>
-                        <form action="/update/{{despesa.id }}/categoria" method="post">
-                            <input type="text" name="categoriaForm" value="{{despesa.categoria}}">
-                        </form>
-                    </td>
-
-                    <td>
-                        <form action="/update/{{despesa.id }}/valor" method="post">
-                            <input type="text" name="valorForm" value='{{ "%.2f"|format(despesa.valor) }}'>
-                        </form>
-                    </td>
-
-                    <td>
-                        <form action="/update/{{despesa.id }}/data_pagamento" method="post">
-                            <input type="text" name="data_pagamentoForm" value="{{despesa.data_pagamento.strftime('%d/%m/%Y') }}">
-                        </form>
-                    </td>
-
-                    <td>
-                        <form action="/update/{{despesa.id }}/descricao" method="post">
-                            <input type="text" name="descricaoForm" value="{{ despesa.descricao}}">
-                        </form> 
-                    </td>
-
-                    <td>
-                        <form action="/delete/{{ despesa.id }}" method="post">
-                            <button type="submit">Delete</button>
-                        </form>
-                    </td>
-
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="6">Nenhuma despesa registrada.</td>
-                </tr>
-            {% endfor %}
-        </table>
-
-
-
-
-        <hr>
-        <h1>Campo de Receitas</h1>
-
-        <h3>Nova Receita</h3>
-
-        <form action="{{ url_for('criar_receita') }}" method="post">
-            <label for="valorForm">Valor:</label><br>
-            <input type="number" step="100" name="valorForm" id="valorForm" required><br><br>
-
-            <label for="categoriaForm">Categoria:</label><br>
-            <input type="text" name="categoriaForm" id="categoriaForm" required><br><br>
-
-            <label for="descricaoForm">Descrição:</label><br>
-            <textarea name="descricaoForm" id="descricaoForm" rows="3"></textarea><br><br>
-
-            <label for="data_recebimentoForm">Data de Recebimento:</label><br>
-            <input type="date" name="data_recebimentoForm" id="data_recebimentoForm" required><br><br>
-
-            <label for="mes_referenciaForm">Mês de Referência:</label><br>
-            <input type="date" name="mes_referenciaForm" id="mes_referenciaForm" required><br><br>
-
-            <button type="submit">Salvar</button>
-        </form>
-
-
-
-        <h3>Minhas Receitas</h3>
-        <table border="1">
-            <tr>
-                <th>Categoria</th>
-                <th>Valor</th>
-                <th>Data de Recebimento</th>
-                <th>Descrição</th>
-                <th>Excluir</th>
-            </tr>
-            {% for receita in receitas %}
-                <tr>
-                    <td>
-                        <form action="/update/{{receita.id }}/categoria/r" method="post">
-                            <input type="text" name="categoriaForm" value="{{receita.categoria}}">
-                        </form>
-                    </td>
-
-                    <td>
-                        <form action="/update/{{receita.id }}/valor/r" method="post">
-                            <input type="text" name="valorForm" value="{{ '%.2f'|format(receita.valor) }}">
-                        </form>                        
-                    </td>
-
-                    <td>
-                        <form action="/update/{{receita.id }}/data_recebimento/r" method="post">
-                            <input type="text" name="data_recebimentoForm" value="{{receita.data_recebimento.strftime('%d/%m/%Y') }}">
-                        </form>
-                    </td>
-
-                    <td>
-                        <form action="/update/{{receita.id }}/descricao/r" method="post">
-                            <input type="text" name="descricaoForm" value="{{ receita.descricao }}">
-                        </form> 
-                    </td>
-
-                    <td>
-                        <form action="/delete/{{ receita.id }}/r" method="post">
-                            <button type="submit">Delete</button>
-                        </form>
-                    </td>
-
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="6">Nenhuma receita registrada.</td>
-                </tr>
-            {% endfor %}
-        </table>
 
     {% else %}
         <h1>You are not logged in!</h1>

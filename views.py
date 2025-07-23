@@ -63,6 +63,7 @@ def home():
 
     todas_receitas = Receita.query.filter_by(usuario_id=current_user.id).all()
     todas_despesas = Despesa.query.filter_by(usuario_id=current_user.id).all()
+    todas_metas = MetaPoupanca.query.filter_by(usuario_id=current_user.id).all()
 
 # Filtrando manualmente com base no split da data
     receitas = [
@@ -77,13 +78,23 @@ def home():
         and d.mes_referencia.strftime('%Y-%m-%d').split('-')[1] == str(mes).zfill(2)
     ]
 
+    metas_comciltro = [
+        m for m in todas_metas
+        if m.mes_referencia.strftime('%Y-%m-%d').split('-')[0] == str(ano)
+        and m.mes_referencia.strftime('%Y-%m-%d').split('-')[1] == str(mes).zfill(2)
+    ]
+
+
+ 
+
     metas = current_user.metas
 
 
     total_receitas = sum([r.valor for r in receitas])
     total_despesas = sum([d.valor for d in despesas])
+    total_metas = sum([m.valor_meta for m in metas_comciltro])
 
-    sobra = total_receitas - total_despesas
+    sobra = total_receitas - total_despesas - total_metas
 
 
     return render_template(
@@ -93,6 +104,7 @@ def home():
         metas=metas,
         total_despesas=total_despesas,
         total_receitas=total_receitas,
+        meta_filtro=total_metas,
         sobra=sobra,
         mes=mes,
         ano=ano
