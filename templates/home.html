@@ -4,16 +4,25 @@
 
 {% block content %}
 
-
+    
 
 
     {% if current_user.is_authenticated %}
+
+
+
+
+
+
+
+
+
 
         <div class="one-part">
 
 
 
-            <div class="one-part-left">
+            <div class="part1">
 
 
                 <div class="find-form">
@@ -56,7 +65,7 @@
 
 
                         <div class="resumo-item ">
-                            <p>Receita:</p>
+                            <p class="t-item">Receita:</p>
                              
                             <div class="inf-resumo inf-resumo-r">
                                 <h3>{{ total_receitas }}</h3>
@@ -66,7 +75,7 @@
 
 
                         <div class="resumo-item">
-                            <p>Despesa: </p>
+                            <p class="t-item">Despesa: </p>
                             <div class="inf-resumo inf-resumo-d">
                                 <h3>{{ total_despesas }}</h3>
                             </div>
@@ -75,7 +84,7 @@
 
                         
                         <div class="resumo-item">
-                            <p>Meta:</p>
+                            <p class="t-item">Meta:</p>
                                 
                             <div class="inf-resumo inf-resumo-s">
                                 <h3>{{ meta_filtro }}</h3>
@@ -84,7 +93,7 @@
                         
                         
                         <div class="resumo-item">
-                            <p>Sobra:</p>
+                            <p class="t-item">Sobra:</p>
                              
                             <div class="inf-resumo inf-resumo-s">
                                 <h3>{{ sobra }}</h3>
@@ -94,13 +103,13 @@
 
 
                     </div>
+                    
                 </div>
 
 
             </div>
 
 
-            
 
 
         </div>
@@ -112,9 +121,43 @@
         
 
 
-        <div class="second-part">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <div class="grid-container">
+
+
+
+
+
+
+
+
+
+
+
+        <div class="second-part item">
             
-            <div class="second-part-left">
+            <div class="second-part1">
             
                 <div class="div-d">
 
@@ -211,7 +254,18 @@
 
             </div>    
 
-            <div class="second-part-right">
+            
+        </div>
+
+
+
+
+
+
+        <div class="item">
+
+
+            <div class="second-part2">
 
 
                 <div class="div-r">
@@ -305,13 +359,8 @@
             </div>
 
 
-            
-            </div>
 
 
-
-
-            
 
         </div>
 
@@ -320,19 +369,26 @@
 
 
 
+        <div class="metas item">
 
+            
+            <div class="meta2">
 
-        <div class="one-part-meta">
+                <div>
+                    
+                    <h3>Minhas Metas</h3>
+    
+                </div>
 
-                <div class="one-part-meta1">
-
+                <div class="meta1">
+    
                     <div >
                 
                         <button id="btnCadastrar">Cadastrar Meta</button>
                     </div>
     
     
-                    <div class="c_meta">
+                    <div class="c-meta">
                         <form action="{{ url_for('criar_meta') }}" method="post" id="formMeta" style="display: none;" >
                             <label for="mes_referenciaForm">Mês Referencia:</label><br>
                             <input type="date"  name="mes_referenciaForm" id="mes_referenciaForm" required><br><br>
@@ -340,61 +396,59 @@
                             <label for="valor_metaForm">Valor da Meta:</label><br>
                             <input type="number" step="100" name="valor_metaForm" id="valor_metaForm" required><br><br>
                 
-                            <button type="submit">Salvar</button>
+                            <button type="submit">Salvar</button>   
                         </form>
                     </div>
-
-                </div>
-
-                <div class="one-part-meta2">
+    
+            </div>
                     
-                    <button id="btnVerMetas">Mostrar Metas</button>
-            
-                    <table id="tableMetas" style="display: none;" >
-                        <thead>
-                            <th>Mês Referência</th>
-                            <th>Valor da Meta</th>
-                            <th>Excluir</th>
-                        </thead>
-                        {% for meta in metas %}
-                            <tr>
-            
-                                <td>
-                                    <form action="/update/{{ meta.id }}/mes_referencia" method="post">
-                                        <input type="text" name="mes_referenciaForm" value="{{meta.mes_referencia.strftime('%d/%m/%Y') }}">
-                                    </form>
-                                </td>
-                                
-                                <td>
-                                    <form action="/update/{{ meta.id }}/valor_meta" method="post">
-                                        <input type="text" name="valor_metaForm" value="{{ '%.2f'|format(meta.valor_meta) }}">
-                                    </form>
-                                </td>
-            
-                               
-            
-                                <td>
-                                    <form action="/delete/{{ meta.id }}/m" method="post">
-                                        <button type="submit" class="excluir-btn">Delete</button>
-                                    </form>
-                                </td>
+                <!-- <button id="btnVerMetas">Mostrar Metas</button> -->
+                
+                <table id="tableMetas" style="" >
+                    <thead>
+                        <th>Mês Referência</th>
+                        <th>Valor da Meta</th>
+                        <th>Excluir</th>
+                    </thead>
+                    {% for meta in metas %}
+                        <tr>
+        
+                            <td>
+                                <form action="/update/{{ meta.id }}/mes_referencia" method="post">
+                                    <input type="text" name="mes_referenciaForm" value="{{meta.mes_referencia.strftime('%d/%m/%Y') }}">
+                                </form>
+                            </td>
+                            
+                            <td>
+                                <form action="/update/{{ meta.id }}/valor_meta" method="post">
+                                    <input type="text" name="valor_metaForm" value="{{ '%.2f'|format(meta.valor_meta) }}">
+                                </form>
+                            </td>
+        
+                            
+        
+                            <td>
+                                <form action="/delete/{{ meta.id }}/m" method="post">
+                                    <button type="submit" class="excluir-btn">Delete</button>
+                                </form>
+                            </td>
 
-                            </tr>
-                        {% else %}
-                            <tr>
-                                <td colspan="4">Nenhuma despesa registrada.</td>
-                            </tr>
-                        {% endfor %}
-                    </table>
-
-                </div>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="4">Nenhuma despesa registrada.</td>
+                        </tr>
+                    {% endfor %}
+                </table>
 
             </div>
 
+        </div>
 
 
 
-                
+
+        </div>         
 
             
     
