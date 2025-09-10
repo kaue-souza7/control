@@ -1,0 +1,89 @@
+@import url(home.css); 
+
+
+/* ============================= */
+/* RESET E ROOT */
+/* ============================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* Cores principais */
+    --color-primary: #898989;
+    --color-secondary: #dedede;
+    --color-light: #f5f5f5;
+    --color-dark: #333;
+    --color-danger: #ff4d4d;
+    --color-danger-hover: #cc0000;
+    --color-success: rgba(25, 219, 22, 0.3);
+    --color-warning: rgba(255, 0, 0, 0.3);
+    --color-info: rgba(12, 79, 11, 0.3);
+
+    /* Fundo modal */
+    --overlay-bg: rgba(0, 0, 0, 0.5);
+
+    /* Tipografia */
+    --font-family: 'Inter', sans-serif;
+    --font-size-base: 1rem;
+    --font-size-large: 1.2rem;
+
+    /* Espaçamentos */
+    --spacing-xs: 0.3rem;
+    --spacing-sm: 0.6rem;
+    --spacing-md: 0.7rem;
+    --spacing-lg: 1rem;
+    --spacing-xl: 1.5rem;
+
+    /* Bordas */
+    --radius-sm: 5px;
+    --radius-md: 7px;
+    --radius-lg: 10px;
+
+    /* Sombra */
+    --shadow-sm: 0 0 10px rgba(0,0,0,0.05);
+    --shadow-md: 0 0 15px rgba(0,0,0,0.3);
+}
+
+
+
+
+
+/* ============================= */
+/* BASE */
+/* ============================= */
+html, body {
+    height: 100%;
+    font-size: 100%;
+    font-family: var(--font-family);
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+}
+
+/* ============================= */
+/* HEADER */
+/* ============================= */
+header {
+    background-color: var(--color-primary);
+    padding: var(--spacing-sm);
+    margin-bottom: var(--spacing-xl);
+    border-radius: 0 0 var(--radius-md) var(--radius-md);
+}
+
+
+/* ============================= */
+/* FOOTER */
+/* ============================= */
+footer {
+    background-color: var(--color-primary);
+    margin-top: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+}

@@ -3,24 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Minha Página{% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
     <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1.0, maximum-scale=10, minimum-scale=1.0">
 </head>
 <body>
 
     <header class="header">
+
         <a href="{{ url_for('logout') }}" class="btn btn-danger" style="float: right; margin: 10px; text-decoration: none; color: black;">
             logout
         </a>
-
-        <a href="{{ url_for('home') }}" class="btn btn-danger" style="float: right; margin: 10px; text-decoration: none; color: black;">
+        
+        <a href="{{ url_for('profile') }}" class="btn btn-danger" style="float: right; margin: 10px; text-decoration: none; color: black;">
             my profile
         </a>
-
-        <a href="{{ url_for('home') }}" class="btn btn-danger" style="float: right; margin: 10px; text-decoration: none; color: black;">
+        
+        <a href="{{ url_for('calculator') }}" class="btn btn-danger" style="float: right; margin: 10px; text-decoration: none; color: black;">
             calculator
         </a>
-        <h1>Welcome to home {{ current_user.name }}!</h1>
+
+        <a href="{{ url_for('blog') }}" class="btn btn-danger" style="float: right; margin: 10px; text-decoration: none; color: black;">
+            blog
+        </a>
+
+        <h1>W. Control</h1>
+    
 
         
     </header>

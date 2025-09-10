@@ -1,7 +1,7 @@
-from main import app
+from . import app
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
-from models import User, Despesa, Receita, MetaPoupanca
+from app.models import User, Despesa, Receita, MetaPoupanca
 from db import db
 import hashlib
 from sqlalchemy import func
@@ -18,6 +18,27 @@ lm.login_view = 'login'
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
 db.init_app(app)
+
+
+
+
+
+
+# ///////////// links menu /////////////
+@app.route('/blog', methods=['GET'])
+def blog():
+    return render_template('blog.html')
+
+@app.route('/calculator', methods=['GET'])
+def calculator():
+    return render_template('calculator.html')
+
+@app.route('/profile', methods=['GET'])
+def profile():
+    return render_template('profile.html')
+
+
+
 
 
 
