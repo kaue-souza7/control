@@ -74,6 +74,11 @@ header {
     border-radius: 0 0 var(--radius-md) var(--radius-md);
 }
 
+header a {
+    color: black;
+    text-decoration: none;
+}
+
 
 /* ============================= */
 /* FOOTER */
